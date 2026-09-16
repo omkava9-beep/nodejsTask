@@ -54,7 +54,17 @@ export async function createBid(req :Request , res : Response){
                 message: 'The product bid is finished.'
             })
         }
-    
+        
+        if(bidPrice <= product.current_highest){
+            return res.status(400).json({
+                message : 'The bid price must be higher than the current highest bid.'
+            })
+        }
+
+
+        product.current_highest = bidPrice;
+        await productRepo.save(product);
+
         const bid = bidRepo.create({
             bidPrice : bidPrice,
             product : product,
