@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Product } from "./Product";
+import { Bid } from "./Bid";
 
 export enum Role {
     SUPERADMIN = 'SUPERADMIN',
@@ -12,10 +14,31 @@ export enum Role {
 @Entity('user')
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id! : string
+    id : string
 
     @Column({type :'varchar'})
-    name : string = ''
-    
+    name : string
 
+    // @Column({type:'varchar'})
+    // email : string = ''
+    @Column({type:'varchar' , unique:true})
+    email : string
+
+    @Column({type:'varchar'})
+    password : string
+    
+    @Column({type : 'enum' , enum:Role , default:Role.USER})
+    role : Role
+
+    @CreateDateColumn()
+    createdAt : Date;
+
+    @OneToMany(()=>Product , (product) => product.userId)
+    product : Product[]
+
+    @OneToMany(()=>Bid , (bid)=>bid.user)
+    bid : Bid[]
+
+    @UpdateDateColumn()
+    updatedAt : Date;
 }

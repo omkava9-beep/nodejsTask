@@ -1,5 +1,7 @@
 import {DataSource} from 'typeorm'
 import { User } from '../entities/User';
+import { Product } from '../entities/Product';
+import { Bid } from '../entities/Bid';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -10,7 +12,7 @@ export const AppDataSource = new DataSource({
 //   database: process.env.DB_NAME!,
   synchronize: false, // never true in real projects — use migrations instead
   logging: process.env.NODE_ENV === 'development',
-  entities: [User],
+  entities: [User , Product, Bid],
   migrations: ['src/migrations/*.ts'],
   migrationsRun: false,
   url: 'postgresql://postgres:postgres@localhost:5432/auction_db'

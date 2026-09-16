@@ -37,7 +37,7 @@
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
@@ -45,7 +45,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "emitDecoratorMetadata":true,
-    "experimentalDecorators" :true
+    "experimentalDecorators" :true,
+    "strictPropertyInitialization": false
 
   }
 }
