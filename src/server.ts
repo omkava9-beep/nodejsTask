@@ -5,14 +5,19 @@ import { signupController } from './controllers/auth';
 import { AuthRouter } from './routes/auth/auth';
 import cookieParser from 'cookie-parser';
 import { productsRouter } from './routes/user/product';
-
+import { Server } from 'socket.io'
 
 
 
 
 
 const app = express();
+
+
 dotenv.config();
+
+
+
 
 app.use(cookieParser());
 
@@ -21,16 +26,35 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+
 app.use('/auth' , AuthRouter  )
 app.use('/products' , productsRouter);
+
+
 
 AppDataSource.initialize()
 .then(()=>{
     console.log('Database connected!!');
 
-    app.listen(port , ()=>{
+    const server  = app.listen(port , ()=>{
         console.log('listening to port '+ process.env.PORT);
     });
+    const io = new Server(server , {
+        cors : {
+            origin : "*",
+        }
+    });
+
+    io.on('connection' , (socket)=>{
+        console.log('A user connected:-' , socket.id);
+
+        socket.on('chat message' , (msg)=>{
+            io.emit(
+                'chat message' ,
+                msg
+            )
+        })
+    })
 
 }).catch((e)=>{
     console.log(e);

@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source";
 import { Product, Status } from "../entities/Product";
-import { start } from "repl";
+
 import { User } from "../entities/User";
+import { redis } from "../config/redis";
+import { Queue } from 'bullmq'
+import auctionQueue from "../queues/auctionQueue";
+export const userRepo = AppDataSource.getRepository(User);
 
-const userRepo = AppDataSource.getRepository(User);
-
-const product = AppDataSource.getRepository(Product);
+export const product = AppDataSource.getRepository(Product);
 export async function createProductController(req :Request , res : Response){
 
     try{
@@ -72,7 +74,6 @@ export async function approveProductController(req : Request , res: Response){
 
         prod.approvedBy =  FoundUser;
         prod.status = Status.LISTED;
-        
 
         const savedProduct = await product.save(prod);
         if(!savedProduct){
@@ -81,6 +82,20 @@ export async function approveProductController(req : Request , res: Response){
                 product : null
             })
         }
+        console.log("delay start ", savedProduct.startTime.getTime() - Date.now(), savedProduct.startTime.toISOString(), new Date().toISOString())
+        console.log("delay end", savedProduct.endTime.getTime() - Date.now())
+
+        await auctionQueue.add('auction-start' , {
+            id : savedProduct.id
+        },{
+            delay : savedProduct.startTime.getTime() - Date.now()
+        })
+
+        await auctionQueue.add('auction-end' , {
+            id : savedProduct.id
+        },{
+            delay : savedProduct.endTime.getTime() - Date.now()
+        })
         return res.status(201).json({
             message : 'Product approved Successfully!!',
             product : savedProduct

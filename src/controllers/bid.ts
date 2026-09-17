@@ -54,7 +54,6 @@ export async function createBid(req :Request , res : Response){
                 message: 'The product bid is finished.'
             })
         }
-        
         if(bidPrice <= product.current_highest){
             return res.status(400).json({
                 message : 'The bid price must be higher than the current highest bid.'
@@ -62,7 +61,16 @@ export async function createBid(req :Request , res : Response){
         }
 
 
+        console.log('the bid price :-' + bidPrice);
+
+        console.log('the found username :-' , FoundUser.name);
+
+
+
+
         product.current_highest = bidPrice;
+        product.currentWinnerId = FoundUser;
+
         await productRepo.save(product);
 
         const bid = bidRepo.create({
@@ -81,5 +89,4 @@ export async function createBid(req :Request , res : Response){
             message : e instanceof Error ? e.message : 'Something went wrong'
         })
     }
-
 }

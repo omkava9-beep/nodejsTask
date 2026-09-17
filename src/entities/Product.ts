@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role, User } from "./User";
 import { Bid } from "./Bid";
 
@@ -40,9 +40,12 @@ export class Product {
     @ManyToOne(()=>User, (user)=>user.product)
     userId : User;
 
-    @ManyToOne(()=>User , (user)=>user.product,{nullable:true})
+    @ManyToOne(()=>User , (user)=>user.product,{nullable:true,})
     approvedBy : User | null
 
+    @ManyToOne(()=>User , (user)=>user.product,{nullable:true})
+    currentWinnerId : User | null
+    
     @OneToMany(()=>Bid , (bid)=>bid.product)
     bids : Bid[]
 
