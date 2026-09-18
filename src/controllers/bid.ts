@@ -67,7 +67,6 @@ export async function createBid(req :Request , res : Response){
 
 
 
-
         product.current_highest = bidPrice;
         product.currentWinnerId = FoundUser;
 

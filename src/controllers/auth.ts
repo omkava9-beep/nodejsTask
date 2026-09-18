@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import { Role, User } from "../entities/User";
 import { validationResult } from "express-validator";
 import { login, signup } from "../services/auth";
+import { Server } from "socket.io";
 
-
+import http from 'http'
 export async function signupController(req : Request,resp : Response ){
 
     const name = req.body.name;
@@ -55,6 +56,7 @@ export async function loginController(req  : Request , resp : Response){
             message : 'something went wrong while creaing token'
         })
     }
+    
     resp.cookie('token' , cookie).status(200).json({
         message : data.message
     })    

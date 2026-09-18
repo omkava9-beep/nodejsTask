@@ -1,6 +1,7 @@
 import { Queue  , Worker} from "bullmq";
 import { redis } from "../config/redis";
 import { product } from "../controllers/products";
+import { notificationQueue } from "./notificationQueue";
 
 
 export const auctionQueue = new Queue('auction' , {
@@ -37,12 +38,26 @@ const worker = new Worker('auction' , async (job)=>{
         const winner= prod.currentWinnerId;
 
         const creator= prod.userId;
+        if(!creator ){
+            console.log('no creator recieved for this product.');
+            return;
+        }
 
         console.log(`The creator is ${creator}` )
-
         if(!winner){
-            console.log(`no users has created bid on this product`);
+            notificationQueue.add('auction-empty' , {
+                creatorId : creator.id,
+                message : 'No user created bid on your product auction.'
+            })
         }
+
+        notificationQueue.add('auction-won' , {
+            winnerId : winner?.id,
+            productId :  prod.id,
+            creatorId : creator.id,
+            finalPrice : prod.current_highest,
+            message: 'Congratulations! you won the auction!'
+        })
         console.log(`The winner of this auction is  is ${winner?.name}` );
     }
 } , {

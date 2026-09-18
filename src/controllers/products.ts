@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source";
 import { Product, Status } from "../entities/Product";
-
 import { User } from "../entities/User";
-import { redis } from "../config/redis";
-import { Queue } from 'bullmq'
 import auctionQueue from "../queues/auctionQueue";
 export const userRepo = AppDataSource.getRepository(User);
 
