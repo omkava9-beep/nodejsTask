@@ -52,14 +52,11 @@ export const initializeConnection = async (server : HttpServer )=>{
         console.log('connection done with sockets:-' , socket.id);
         const userId = socket.data.userId;
 
-
-
        console.log('User Connected :-',
             userId,
             'Socket:-',
             socket.id
        );
-
        socket.join(`user:${userId}`);
 
        console.log('Joined room user:-' + userId);

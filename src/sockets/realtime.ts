@@ -32,8 +32,6 @@ export async function startNotificationSubscriber(
             }
 
             const data = JSON.parse(message);
-
-
             onNotification(data)
         }
     )

@@ -24,21 +24,27 @@ export class User {
     @Column({type:'varchar' , unique:true})
     email : string
 
-    @Column({type:'varchar'})
-    password : string
+    @Column({type:'varchar' , nullable:true})
+    password : string | null
     
     @Column({type : 'enum' , enum:Role , default:Role.USER})
     role : Role
 
     @CreateDateColumn()
     createdAt : Date;
-
+    
     @OneToMany(()=>Product , (product) => product.userId)
     product : Product[]
-
+    
     @OneToMany(()=>Bid , (bid)=>bid.user)
     bid : Bid[]
-
+    
     @UpdateDateColumn()
     updatedAt : Date;
+    
+    @Column({type : 'varchar' , unique:true , nullable: true})
+    googleId!: string | null;
+
+
+
 }

@@ -55,7 +55,15 @@ export async function login(email : string , password: string){
             message : 'User with this email does not exist.',
         }
     }
-
+    //as per now before the oauth is implemented.
+    if(!existingUser.password){
+        
+        return {
+            status: 401,
+            success : false,
+            message : 'The password field is empty.'
+        };
+    }
     const matchingPassword = await bcryptjs.compare(password , existingUser.password);
 
     if(!matchingPassword){
