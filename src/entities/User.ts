@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Product } from "./Product";
 import { Bid } from "./Bid";
 
@@ -21,7 +21,8 @@ export class User {
 
     // @Column({type:'varchar'})
     // email : string = ''
-    @Column({type:'varchar' , unique:true})
+    @Column({type:'varchar'})
+    @Index({unique : true})
     email : string
 
     @Column({type:'varchar' , nullable:true})
@@ -42,7 +43,8 @@ export class User {
     @UpdateDateColumn()
     updatedAt : Date;
     
-    @Column({type : 'varchar' , unique:true , nullable: true})
+    @Column({type : 'varchar' , nullable: true})
+    @Index({unique: true})
     googleId!: string | null;
 
 
