@@ -33,30 +33,6 @@ export async function authMiddleWare(req : Request , res : Response ,next : Next
 
 }
 
-export async function isUser(req : Request , res: Response , next : NextFunction){
-    try{
-        const user=  req.user!;
-
-
-        if(!user){
-            throw new Error('Unauthenticated!')
-        }
-
-        if(user.role !== Role.USER){
-            throw new Error('only the user is authorized for this route. please login with manager account.')
-        }
-
-    
-        next();
-
-    }catch(e  : unknown){
-        return res.status(503).json({
-            message: e instanceof Error ? e.message : 'Something Went Wrong!'
-        })
-
-
-    }
-}
 export async function isManager(req : Request , res: Response , next : NextFunction){
     try{
         const user=  req.user!;

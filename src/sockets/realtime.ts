@@ -13,9 +13,7 @@ export async function publishNotification(data : {
         'notifications',
         JSON.stringify(data)
     )
-    
 }
-
 export async function startNotificationSubscriber(
     onNotification : (data : any)=>void
 ){

@@ -1,28 +1,23 @@
-import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Product } from "./Product";
 import { Bid } from "./Bid";
+import { Base } from "./base";
 
 export enum Role {
     SUPERADMIN = 'SUPERADMIN',
     MANAGER = 'MANAGER',
     USER = 'USER'
 }
-// @Entity('users')
-// export class User {
 
-// }
 @Entity('user')
-export class User {
+export class User extends Base {
     @PrimaryGeneratedColumn('uuid')
     id : string
 
     @Column({type :'varchar'})
     name : string
 
-    // @Column({type:'varchar'})
-    // email : string = ''
     @Column({type:'varchar'})
-    @Index({unique : true})
     email : string
 
     @Column({type:'varchar' , nullable:true})
@@ -30,9 +25,6 @@ export class User {
     
     @Column({type : 'enum' , enum:Role , default:Role.USER})
     role : Role
-
-    @CreateDateColumn()
-    createdAt : Date;
     
     @OneToMany(()=>Product , (product) => product.userId)
     product : Product[]
@@ -40,11 +32,8 @@ export class User {
     @OneToMany(()=>Bid , (bid)=>bid.user)
     bid : Bid[]
     
-    @UpdateDateColumn()
-    updatedAt : Date;
     
-    @Column({type : 'varchar' , nullable: true})
-    @Index({unique: true})
+    @Column({type : 'varchar' , nullable: true , unique: true})
     googleId!: string | null;
 
 

@@ -1,4 +1,3 @@
-import { error } from 'console';
 import IORedis from 'ioredis';
 
 export const redis = new IORedis({

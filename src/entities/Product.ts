@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role, User } from "./User";
 import { Bid } from "./Bid";
+import { Base } from "./base";
 
 
 export enum Status {
@@ -10,7 +11,7 @@ export enum Status {
 }
 
 @Entity('product')
-export class Product {
+export class Product extends Base {
     @PrimaryGeneratedColumn('uuid')
     id : string;
 
@@ -52,6 +53,4 @@ export class Product {
     @Column({type : 'timestamp'})
     endTime : Date;
 
-    @CreateDateColumn()
-    createdAt : Date;
 }

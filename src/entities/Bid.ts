@@ -1,9 +1,10 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 import { Product } from "./Product";
+import { Base } from "./base";
 
 @Entity('bid')
-export class Bid {
+export class Bid extends Base{
     @PrimaryGeneratedColumn('uuid')
     id : string;
 
@@ -17,8 +18,6 @@ export class Bid {
     @ManyToOne(() => Product, (product) => product.bids, { onDelete: 'CASCADE' })
     product: Product;
 
-    @CreateDateColumn()
-    createdAt : Date;
 }
 
 ////PENDING FROM FEEDING THE DATA OF PRODUCT MATCHING STARTING TIME AND 
